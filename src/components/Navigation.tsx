@@ -1,36 +1,38 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navigation() {
-  const [visible, setVisible] = useState(true)
-  const [lastScrollY, setLastScrollY] = useState(0)
-  const pathname = usePathname()
-
-  // Hide nav on landing page
-  if (pathname === '/') return null
+  const [visible, setVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const pathname = usePathname();
 
   useEffect(() => {
+    if (pathname === "/") return;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
+      const currentScrollY = window.scrollY;
 
       if (currentScrollY < 100) {
-        setVisible(true)
-      } else if (currentScrollY > lastScrollY) {
-        setVisible(false)
+        setVisible(true);
+      } else if (currentScrollY > lastScrollYRef.current) {
+        setVisible(false);
       } else {
-        setVisible(true)
+        setVisible(true);
       }
 
-      setLastScrollY(currentScrollY)
-    }
+      lastScrollYRef.current = currentScrollY;
+    };
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScrollY])
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
+
+  // Hide nav on landing page - AFTER all hooks
+  if (pathname === "/") return null;
 
   return (
     <motion.nav
@@ -38,6 +40,7 @@ export default function Navigation() {
       animate={{ opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.3 }}
       className="fixed top-0 left-0 right-0 z-50 px-6 py-6 pointer-events-none"
+      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link
@@ -51,9 +54,9 @@ export default function Navigation() {
           <Link
             href="/collections"
             className={`text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${
-              pathname.startsWith('/collections')
-                ? 'text-text-primary'
-                : 'text-text-muted hover:text-text-primary'
+              pathname.startsWith("/collections")
+                ? "text-text-primary"
+                : "text-text-muted hover:text-text-primary"
             }`}
           >
             Collections
@@ -61,9 +64,9 @@ export default function Navigation() {
           <Link
             href="/about"
             className={`text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${
-              pathname === '/about'
-                ? 'text-text-primary'
-                : 'text-text-muted hover:text-text-primary'
+              pathname === "/about"
+                ? "text-text-primary"
+                : "text-text-muted hover:text-text-primary"
             }`}
           >
             About
@@ -71,5 +74,5 @@ export default function Navigation() {
         </div>
       </div>
     </motion.nav>
-  )
+  );
 }
