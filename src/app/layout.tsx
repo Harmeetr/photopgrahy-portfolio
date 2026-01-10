@@ -3,11 +3,19 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Harmeet Rai - Photography",
   description: "A gallery of human connection and the beauty of this world.",
+  openGraph: {
+    title: "Harmeet Rai - Photography",
+    description: "A gallery of human connection and the beauty of this world.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
