@@ -9,13 +9,13 @@ export default function AboutPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
         >
-          <h1 className="text-text-primary text-2xl tracking-wide mb-12">
+          <h1 className="font-serif text-text-primary text-3xl tracking-wide mb-16">
             About
           </h1>
 
-          <div className="space-y-6 text-text-muted leading-relaxed">
+          <div className="space-y-8 font-serif text-text-muted text-lg leading-relaxed">
             <p>
               I capture moments of human connection and the quiet beauty that
               exists in the spaces between.
@@ -34,14 +34,19 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="mt-16 pt-8 border-t border-surface">
+          <motion.div
+            className="mt-20 pt-8 border-t border-white/10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          >
             <a
               href="mailto:hello@harmeetrai.com"
-              className="text-text-muted text-sm hover:text-text-primary transition-colors duration-300"
+              className="text-text-muted text-sm tracking-wide hover:text-text-primary transition-colors duration-500"
             >
               hello@harmeetrai.com
             </a>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </main>

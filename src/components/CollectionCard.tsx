@@ -13,26 +13,26 @@ interface Props {
 export default function CollectionCard({ collection, index }: Props) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: index * 0.15, ease: 'easeOut' }}
+      transition={{ duration: 1, delay: index * 0.2, ease: 'easeOut' }}
     >
       <Link href={`/collections/${collection.slug}`} className="group block">
-        <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[4px] shadow-xl shadow-black/30">
           <Image
             src={`/collections/${collection.slug}/${collection.cover}`}
             alt={collection.title}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            className="object-cover transition-all duration-700 group-hover:scale-[1.02]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-500" />
+          <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-700" />
         </div>
-        <div className="mt-4">
-          <h2 className="text-text-primary text-sm tracking-wide">
+        <div className="mt-6">
+          <h2 className="font-serif text-text-primary text-xl tracking-wide group-hover:text-white transition-colors duration-500">
             {collection.title}
           </h2>
-          <p className="text-text-muted text-xs mt-1">
+          <p className="text-text-muted text-sm mt-2 leading-relaxed">
             {collection.description}
           </p>
         </div>

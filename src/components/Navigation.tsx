@@ -45,15 +45,15 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link
           href="/"
-          className="text-text-muted text-xs tracking-[0.2em] uppercase hover:text-text-primary transition-colors duration-300 pointer-events-auto"
+          className="font-serif text-text-primary text-base tracking-wide hover:text-white transition-colors duration-500 pointer-events-auto"
         >
           Harmeet Rai
         </Link>
 
-        <div className="flex gap-8 pointer-events-auto">
+        <div className="flex gap-10 pointer-events-auto">
           <Link
             href="/collections"
-            className={`text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${
+            className={`text-sm tracking-wide transition-colors duration-500 ${
               pathname.startsWith("/collections")
                 ? "text-text-primary"
                 : "text-text-muted hover:text-text-primary"
@@ -63,7 +63,7 @@ export default function Navigation() {
           </Link>
           <Link
             href="/about"
-            className={`text-xs tracking-[0.15em] uppercase transition-colors duration-300 ${
+            className={`text-sm tracking-wide transition-colors duration-500 ${
               pathname === "/about"
                 ? "text-text-primary"
                 : "text-text-muted hover:text-text-primary"
