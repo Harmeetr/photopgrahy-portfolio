@@ -50,15 +50,15 @@ export default function Lightbox({ isOpen, onClose, images, currentIndex, onNavi
           />
 
           {/* Content */}
-          <div className={`relative z-10 flex items-center gap-8 max-w-7xl mx-auto px-8 ${hasReflection ? 'w-full' : ''}`}>
+          <div className={`relative z-10 flex items-center justify-center gap-8 w-full h-full px-16 ${hasReflection ? 'max-w-[90vw]' : ''}`}>
             {/* Left arrow */}
             {currentIndex > 0 && (
               <button
                 onClick={() => onNavigate(currentIndex - 1)}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors p-4"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors p-4 z-20"
                 aria-label="Previous image"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M15 18l-6-6 6-6" />
                 </svg>
               </button>
@@ -66,21 +66,19 @@ export default function Lightbox({ isOpen, onClose, images, currentIndex, onNavi
 
             {/* Image */}
             <motion.div
-              className={`relative ${hasReflection ? 'flex-[0.6]' : ''}`}
+              className={`relative ${hasReflection ? 'flex-[0.65] h-[85vh]' : 'flex items-center justify-center'}`}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <div className={`relative ${hasReflection ? 'aspect-[4/3]' : 'max-h-[85vh]'} rounded-[4px] overflow-hidden shadow-2xl`}>
+              <div className={`relative ${hasReflection ? 'w-full h-full' : 'w-[90vw] h-[90vh]'} rounded-[4px] overflow-hidden shadow-2xl`}>
                 <Image
                   src={current.src}
                   alt={current.alt}
-                  fill={hasReflection}
-                  width={hasReflection ? undefined : 1200}
-                  height={hasReflection ? undefined : 800}
-                  className={hasReflection ? 'object-cover' : 'object-contain max-h-[85vh] w-auto'}
+                  fill
+                  className="object-contain"
                   style={{ filter: 'sepia(0.08) saturate(1.05) brightness(0.98)' }}
-                  sizes="60vw"
+                  sizes="90vw"
                   priority
                 />
               </div>
@@ -89,7 +87,7 @@ export default function Lightbox({ isOpen, onClose, images, currentIndex, onNavi
             {/* Reflection panel */}
             {hasReflection && (
               <motion.div
-                className="flex-[0.35] bg-[#FAF8F5] rounded-[4px] p-8 max-h-[70vh] overflow-y-auto"
+                className="flex-[0.3] bg-[#FAF8F5] rounded-[4px] p-8 max-h-[85vh] overflow-y-auto"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: 0.25 }}
@@ -104,10 +102,10 @@ export default function Lightbox({ isOpen, onClose, images, currentIndex, onNavi
             {currentIndex < images.length - 1 && (
               <button
                 onClick={() => onNavigate(currentIndex + 1)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors p-4"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors p-4 z-20"
                 aria-label="Next image"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 18l6-6-6-6" />
                 </svg>
               </button>
