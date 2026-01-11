@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, EB_Garamond } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
+import FilmGrain from "@/components/FilmGrain";
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+});
+
+const ebGaramond = EB_Garamond({
+  subsets: ["latin"],
+  variable: "--font-serif",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +31,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${ebGaramond.variable}`}>
         <Navigation />
         {children}
+        <FilmGrain />
       </body>
     </html>
   );
