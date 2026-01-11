@@ -26,7 +26,8 @@ export interface Collection extends CollectionMeta {
 export function getCollectionSlugs(): string[] {
   return fs.readdirSync(collectionsDirectory).filter((file) => {
     const fullPath = path.join(collectionsDirectory, file)
-    return fs.statSync(fullPath).isDirectory()
+    const metaPath = path.join(fullPath, 'meta.md')
+    return fs.statSync(fullPath).isDirectory() && fs.existsSync(metaPath)
   })
 }
 
@@ -53,11 +54,13 @@ export function getAllCollections(): CollectionMeta[] {
 
 export function getCollection(slug: string): Collection {
   const meta = getCollectionMeta(slug)
-  const mediaDir = path.join(collectionsDirectory, slug, 'media')
+  // Media files live in public/, reflections in content/
+  const publicMediaDir = path.join(process.cwd(), 'public/collections', slug, 'media')
+  const contentMediaDir = path.join(collectionsDirectory, slug, 'media')
 
   let mediaFiles: string[] = []
-  if (fs.existsSync(mediaDir)) {
-    mediaFiles = fs.readdirSync(mediaDir).filter((file) => {
+  if (fs.existsSync(publicMediaDir)) {
+    mediaFiles = fs.readdirSync(publicMediaDir).filter((file) => {
       const ext = path.extname(file).toLowerCase()
       return ['.jpg', '.jpeg', '.png', '.webp', '.mp4', '.webm'].includes(ext)
     })
@@ -70,8 +73,8 @@ export function getCollection(slug: string): Collection {
       const isVideo = ['.mp4', '.webm'].includes(ext)
       const baseName = path.basename(filename, ext)
 
-      // Check for reflection markdown
-      const reflectionPath = path.join(mediaDir, `${baseName}.md`)
+      // Check for reflection markdown in content directory
+      const reflectionPath = path.join(contentMediaDir, `${baseName}.md`)
       let reflection: string | undefined
       if (fs.existsSync(reflectionPath)) {
         const reflectionContent = fs.readFileSync(reflectionPath, 'utf8')
