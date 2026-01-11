@@ -21,7 +21,6 @@ interface SceneProps {
 
 export default function Scene({ layout, images, collectionSlug, onImageClick, startIndex }: SceneProps) {
   const imageStyle = "relative rounded-[4px] overflow-hidden cursor-pointer shadow-2xl shadow-black/20 hover:-translate-y-0.5 transition-transform duration-300"
-  const filterStyle = { filter: 'sepia(0.08) saturate(1.05) brightness(0.98)' }
 
   if (layout === 'hero') {
     return (
@@ -39,8 +38,7 @@ export default function Scene({ layout, images, collectionSlug, onImageClick, st
             alt={images[0].alt}
             fill
             className="object-cover"
-            style={filterStyle}
-            sizes="80vw"
+                        sizes="80vw"
           />
         </motion.div>
       </div>
@@ -65,8 +63,7 @@ export default function Scene({ layout, images, collectionSlug, onImageClick, st
               alt={img.alt}
               fill
               className="object-cover"
-              style={filterStyle}
-              sizes="40vw"
+                            sizes="40vw"
             />
           </motion.div>
         ))}
@@ -90,8 +87,7 @@ export default function Scene({ layout, images, collectionSlug, onImageClick, st
           alt={images[0].alt}
           fill
           className="object-cover"
-          style={filterStyle}
-          sizes="45vw"
+                    sizes="45vw"
         />
       </motion.div>
       <div className="flex flex-col gap-6 flex-1 max-w-md">
@@ -110,8 +106,7 @@ export default function Scene({ layout, images, collectionSlug, onImageClick, st
               alt={img.alt}
               fill
               className="object-cover"
-              style={filterStyle}
-              sizes="30vw"
+                            sizes="30vw"
             />
           </motion.div>
         ))}

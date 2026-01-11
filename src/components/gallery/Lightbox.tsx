@@ -77,7 +77,6 @@ export default function Lightbox({ isOpen, onClose, images, currentIndex, onNavi
                   alt={current.alt}
                   fill
                   className="object-contain"
-                  style={{ filter: 'sepia(0.08) saturate(1.05) brightness(0.98)' }}
                   sizes="90vw"
                   priority
                 />
