@@ -11,7 +11,10 @@ export default function Navigation() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/") return;
+    if (pathname === "/") {
+      setVisible(true);
+      return;
+    }
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -31,8 +34,6 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  // Hide nav on landing page - AFTER all hooks
-  if (pathname === "/") return null;
 
   return (
     <motion.nav
@@ -60,6 +61,16 @@ export default function Navigation() {
             }`}
           >
             Collections
+          </Link>
+          <Link
+            href="/journey"
+            className={`text-sm tracking-wide transition-colors duration-500 ${
+              pathname === "/journey"
+                ? "text-text-primary"
+                : "text-text-muted hover:text-text-primary"
+            }`}
+          >
+            Journey
           </Link>
           <Link
             href="/about"
