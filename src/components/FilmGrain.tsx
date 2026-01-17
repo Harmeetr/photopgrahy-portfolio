@@ -13,6 +13,14 @@ export default function FilmGrain() {
             stitchTiles="stitch"
           />
           <feColorMatrix type="saturate" values="0" />
+          {/* Add warm sepia tint */}
+          <feColorMatrix
+            type="matrix"
+            values="1.1 0.1 0 0 0.03
+            0.05 1 0.05 0 0.02
+            0 0.1 0.9 0 0
+            0 0 0 1 0"
+          />
         </filter>
       </svg>
 
@@ -29,7 +37,7 @@ export default function FilmGrain() {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(0,0,0,0.15) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(15,13,10,0.25) 100%)',
         }}
       />
     </div>

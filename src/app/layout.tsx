@@ -1,17 +1,24 @@
 import type { Metadata } from "next";
-import { Inter, EB_Garamond } from "next/font/google";
+import { Spectral, EB_Garamond, Sacramento } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import FilmGrain from "@/components/FilmGrain";
 
-const inter = Inter({
+const spectral = Spectral({
   subsets: ["latin"],
+  weight: ["300", "400", "500"],
   display: "swap",
 });
 
 const ebGaramond = EB_Garamond({
   subsets: ["latin"],
   variable: "--font-serif",
+});
+
+const sacramento = Sacramento({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-handwritten",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${ebGaramond.variable}`}>
+      <body className={`${spectral.className} ${ebGaramond.variable} ${sacramento.variable}`}>
         <Navigation />
         {children}
         <FilmGrain />

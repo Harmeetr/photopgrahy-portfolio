@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 :root {
-    --background: #0a0a0a;
-    --surface: #141414;
-    --text-primary: #e5e5e5;
-    --text-muted: #737373;
-    --accent: #a3a3a3;
+    --background: #0f0d0a;
+    --surface: #1a1612;
+    --text-primary: #e8e4df;
+    --text-muted: #9a918a;
+    --accent: #c4a882;
 }
 
 html {
@@ -33,4 +33,17 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.glow-warm {
+  box-shadow: 0 0 30px rgba(196, 168, 130, 0.15);
 }
