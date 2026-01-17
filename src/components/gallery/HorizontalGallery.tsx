@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Scene, { SceneLayout, SceneImage } from './Scene'
 import Lightbox from './Lightbox'
+import Filmstrip from './Filmstrip'
 
 interface MediaItem {
   filename: string
@@ -29,7 +30,6 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
   const [currentScene, setCurrentScene] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Convert media to scene images
   const allImages: SceneImage[] = useMemo(() =>
     media
       .filter(m => m.type === 'image')
@@ -41,7 +41,6 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
     [media, collectionSlug, collectionTitle]
   )
 
-  // Distribute images into scenes
   const scenes: SceneConfig[] = useMemo(() => {
     const result: SceneConfig[] = []
     let i = 0
@@ -54,7 +53,6 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
       const available = allImages.slice(i, i + count)
 
       if (available.length > 0) {
-        // Adjust layout if not enough images
         let finalLayout = layout
         if (available.length === 1) finalLayout = 'hero'
         else if (available.length === 2 && layout === 'cluster') finalLayout = 'duo'
@@ -73,7 +71,6 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
     return result
   }, [allImages])
 
-  // Navigate to a specific scene
   const goToScene = useCallback((index: number) => {
     if (index < 0 || index >= scenes.length || !containerRef.current) return
     const sceneWidth = window.innerWidth
@@ -96,9 +93,8 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
     }
   }, [currentScene, goToScene])
 
-  // Handle keyboard navigation
   useEffect(() => {
-    if (lightboxOpen) return // Don't interfere with lightbox navigation
+    if (lightboxOpen) return
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
@@ -114,18 +110,16 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [lightboxOpen, goNext, goPrev])
 
-  // Handle scroll wheel to navigate scenes
   useEffect(() => {
     if (lightboxOpen) return
 
     let lastScrollTime = 0
-    const scrollThrottle = 800 // ms between scroll navigations
+    const scrollThrottle = 800
 
     const handleWheel = (e: WheelEvent) => {
       const now = Date.now()
       if (now - lastScrollTime < scrollThrottle) return
 
-      // Detect vertical scroll (deltaY) and convert to horizontal navigation
       if (Math.abs(e.deltaY) > 30) {
         e.preventDefault()
         lastScrollTime = now
@@ -144,7 +138,6 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
     }
   }, [lightboxOpen, goNext, goPrev])
 
-  // Track current scene on scroll
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
@@ -165,6 +158,9 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
     setCurrentImageIndex(index)
     setLightboxOpen(true)
   }
+
+  // Get current image index for filmstrip based on current scene
+  const currentFilmstripIndex = scenes[currentScene]?.startIndex ?? 0
 
   return (
     <>
@@ -190,51 +186,57 @@ export default function HorizontalGallery({ collectionSlug, collectionTitle, med
         ))}
       </div>
 
-      {/* Left arrow */}
-      {currentScene > 0 && !lightboxOpen && (
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          onClick={goPrev}
-          className="fixed left-6 top-1/2 -translate-y-1/2 z-40 p-3 rounded-full bg-black/30 text-white/60 hover:bg-black/50 hover:text-white transition-all"
-          aria-label="Previous scene"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </motion.button>
-      )}
+      {/* Soft left arrow */}
+      <AnimatePresence>
+        {currentScene > 0 && !lightboxOpen && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={goPrev}
+            className="fixed left-6 top-1/2 -translate-y-1/2 z-40 p-3 text-text-muted/40 hover:text-accent transition-colors duration-300"
+            aria-label="Previous scene"
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* Right arrow */}
-      {currentScene < scenes.length - 1 && !lightboxOpen && (
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          onClick={goNext}
-          className="fixed right-6 top-1/2 -translate-y-1/2 z-40 p-3 rounded-full bg-black/30 text-white/60 hover:bg-black/50 hover:text-white transition-all"
-          aria-label="Next scene"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </motion.button>
-      )}
+      {/* Soft right arrow */}
+      <AnimatePresence>
+        {currentScene < scenes.length - 1 && !lightboxOpen && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={goNext}
+            className="fixed right-6 top-1/2 -translate-y-1/2 z-40 p-3 text-text-muted/40 hover:text-accent transition-colors duration-300"
+            aria-label="Next scene"
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* Scene indicators */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-40">
-        {scenes.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goToScene(i)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              i === currentScene
-                ? 'bg-white/80 scale-125'
-                : 'bg-white/20 hover:bg-white/40'
-            }`}
-            aria-label={`Go to scene ${i + 1}`}
-          />
-        ))}
-      </div>
+      {/* Filmstrip navigation */}
+      {!lightboxOpen && (
+        <Filmstrip
+          images={allImages}
+          currentIndex={currentFilmstripIndex}
+          onSelect={(index) => {
+            const sceneIndex = scenes.findIndex(scene => 
+              index >= scene.startIndex && index < scene.startIndex + scene.images.length
+            )
+            if (sceneIndex >= 0) {
+              goToScene(sceneIndex)
+            }
+          }}
+        />
+      )}
 
       {/* Lightbox */}
       <Lightbox
