@@ -7,12 +7,16 @@ import HeroImage from "@/components/HeroImage";
 import ScrollHint from "@/components/ScrollHint";
 import { BotanicalAccent } from '@/components/decorative'
 
+// Base64 blur placeholder
+const blurDataURL = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAQMDBAMBAAAAAAAAAAAAAQIDBQAEBhEHEiExE0FR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAaEQACAgMAAAAAAAAAAAAAAAABAgADBBEh/9oADAMBAAIRAxEAPwC5j2U3mP4/a2d1aW0l5aB5pIKnEoUSEhRBJJJJJPZrWaUqFmJYljwMBF//2Q=='
+
 export default function Home() {
   const heroImage = "/collections/landscapes/media/01.jpg";
 
   return (
     <main className="relative">
-      <section className="relative h-screen flex flex-col items-center justify-center">
+      {/* Hero Section */}
+      <section className="relative h-screen flex flex-col items-center justify-center" aria-label="Welcome">
         <HeroImage src={heroImage} alt="A moment of quiet light" />
         
         <div className="relative z-10 text-center px-6 max-w-2xl">
@@ -31,6 +35,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
             className="font-handwritten text-accent text-2xl md:text-3xl mb-4"
+            role="doc-subtitle"
           >
             a practice of presence
           </motion.p>
@@ -54,7 +59,8 @@ export default function Home() {
         />
       </section>
 
-      <section className="relative py-24 px-6">
+      {/* Collections Preview Section */}
+      <section className="relative py-24 px-6" aria-label="Featured Collections">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -66,10 +72,10 @@ export default function Home() {
             <h2 className="font-handwritten text-accent text-3xl mb-4">
               collections
             </h2>
-            <div className="w-16 h-px bg-accent/30 mx-auto" />
+            <div className="w-16 h-px bg-accent/30 mx-auto" aria-hidden="true" />
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <CollectionPreview
               slug="landscapes"
               title="Landscapes"
@@ -99,9 +105,10 @@ export default function Home() {
           >
             <Link
               href="/collections"
-              className="inline-block font-handwritten text-accent text-xl hover:text-text-primary transition-colors duration-500"
+              className="inline-flex items-center gap-2 font-handwritten text-accent text-xl hover:text-text-primary transition-colors duration-500 group"
             >
-              view all collections →
+              view all collections
+              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
             </Link>
           </motion.div>
         </div>
@@ -122,7 +129,7 @@ function CollectionPreview({
   index: number 
 }) {
   return (
-    <motion.div
+    <motion.article
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
@@ -132,17 +139,20 @@ function CollectionPreview({
         <div className="relative aspect-[4/5] overflow-hidden rounded-sm">
           <Image
             src={image}
-            alt={title}
+            alt={`Preview of ${title} collection`}
             fill
             className="object-cover transition-all duration-700 group-hover:scale-[1.03]"
             sizes="(max-width: 768px) 100vw, 33vw"
+            placeholder="blur"
+            blurDataURL={blurDataURL}
+            loading={index === 0 ? 'eager' : 'lazy'}
           />
-          <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-500" />
+          <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-500" aria-hidden="true" />
         </div>
         <h3 className="font-handwritten text-accent text-xl mt-4 group-hover:text-text-primary transition-colors duration-500">
           {title}
         </h3>
       </Link>
-    </motion.div>
+    </motion.article>
   );
 }

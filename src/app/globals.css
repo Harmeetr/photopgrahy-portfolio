@@ -18,6 +18,13 @@ body {
     background: var(--background);
     color: var(--text-primary);
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Improve text rendering */
+h1, h2, h3, h4, h5, h6 {
+    text-rendering: optimizeLegibility;
 }
 
 /* Hide scrollbar but keep functionality */
@@ -35,6 +42,30 @@ body {
   display: none;
 }
 
+/* Selection styling */
+::selection {
+  background: rgba(196, 168, 130, 0.3);
+  color: var(--text-primary);
+}
+
+/* Focus visible styling for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-6px); }
@@ -46,4 +77,45 @@ body {
 
 .glow-warm {
   box-shadow: 0 0 30px rgba(196, 168, 130, 0.15);
+}
+
+/* Utility class for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Line clamp utility */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Image optimization - prevent layout shift */
+img {
+  content-visibility: auto;
+}
+
+/* Improve touch targets on mobile */
+@media (pointer: coarse) {
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }

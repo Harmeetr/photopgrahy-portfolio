@@ -1,9 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { CollectionMeta } from '@/lib/collections'
+
+// Base64 blur placeholder
+const blurDataURL = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAQMDBAMBAAAAAAAAAAAAAQIDBQAEBhEHEiExE0FR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAaEQACAgMAAAAAAAAAAAAAAAABAgADBBEh/9oADAMBAAIRAxEAPwC5j2U3mP4/a2d1aW0l5aB5pIKnEoUSEhRBJJJJJPZrWaUqFmJYljwMBF//2Q=='
 
 interface Props {
   collection: CollectionMeta
@@ -12,10 +16,11 @@ interface Props {
 }
 
 export default function CollectionCard({ collection, index, variant = 'standard' }: Props) {
+  const [isLoaded, setIsLoaded] = useState(false)
   const isFeatured = variant === 'featured'
   
   return (
-    <motion.div
+    <motion.article
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ 
@@ -34,17 +39,25 @@ export default function CollectionCard({ collection, index, variant = 'standard'
         `}>
           <Image
             src={`/collections/${collection.slug}/${collection.cover}`}
-            alt={collection.title}
+            alt={`Cover image for ${collection.title} collection`}
             fill
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            className={`object-cover transition-all duration-700 ease-out group-hover:scale-[1.03] ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
             sizes={isFeatured 
               ? "(max-width: 768px) 100vw, 58vw" 
               : "(max-width: 768px) 100vw, 40vw"
             }
+            placeholder="blur"
+            blurDataURL={blurDataURL}
+            loading={index < 2 ? 'eager' : 'lazy'}
+            onLoad={() => setIsLoaded(true)}
           />
-          <div className="absolute inset-0 bg-background/10 group-hover:bg-transparent transition-colors duration-500" />
+          {/* Loading placeholder */}
+          {!isLoaded && (
+            <div className="absolute inset-0 bg-gradient-to-br from-surface to-background animate-pulse" />
+          )}
+          <div className="absolute inset-0 bg-background/10 group-hover:bg-transparent transition-colors duration-500" aria-hidden="true" />
           
-          <div className="absolute inset-0 rounded-sm ring-1 ring-white/0 group-hover:ring-accent/20 transition-all duration-500" />
+          <div className="absolute inset-0 rounded-sm ring-1 ring-white/0 group-hover:ring-accent/20 transition-all duration-500" aria-hidden="true" />
         </div>
 
         <div className="mt-5">
@@ -52,19 +65,22 @@ export default function CollectionCard({ collection, index, variant = 'standard'
             {collection.title}
           </h2>
           
-          <div className="flex items-center gap-3 mt-2">
+          <div className="flex items-center gap-3 mt-2 flex-wrap">
             {collection.date && (
-              <span className="text-text-muted/70 text-xs tracking-wider">
+              <time 
+                dateTime={collection.date}
+                className="text-text-muted/70 text-xs tracking-wider"
+              >
                 {new Date(collection.date).getFullYear()}
-              </span>
+              </time>
             )}
-            <span className="w-1 h-1 rounded-full bg-accent/30" />
-            <span className="text-text-muted/70 text-xs tracking-wider">
+            <span className="w-1 h-1 rounded-full bg-accent/30" aria-hidden="true" />
+            <span className="text-text-muted/70 text-xs tracking-wider line-clamp-1">
               {collection.description}
             </span>
           </div>
         </div>
       </Link>
-    </motion.div>
+    </motion.article>
   )
 }

@@ -1,5 +1,29 @@
+import { Metadata } from 'next'
 import { getAllCollections } from '@/lib/collections'
 import CollectionCard from '@/components/CollectionCard'
+
+export const metadata: Metadata = {
+  title: 'Collections',
+  description: 'Explore curated photography collections by Harmeet Rai featuring landscapes, portraits, and contemplative moments.',
+  openGraph: {
+    title: 'Collections | Harmeet Rai Photography',
+    description: 'Explore curated photography collections featuring landscapes, portraits, and contemplative moments.',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Harmeet Rai Photography Collections',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Collections | Harmeet Rai Photography',
+    description: 'Explore curated photography collections featuring landscapes, portraits, and contemplative moments.',
+  },
+}
 
 export default function CollectionsPage() {
   const collections = getAllCollections()
@@ -7,12 +31,12 @@ export default function CollectionsPage() {
   return (
     <main className="min-h-screen px-6 pt-28 pb-20">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-16">
+        <header className="mb-16">
           <h1 className="font-handwritten text-accent text-4xl md:text-5xl tracking-wide mb-3">
             collections
           </h1>
-          <div className="w-20 h-px bg-accent/30" />
-        </div>
+          <div className="w-20 h-px bg-accent/30" aria-hidden="true" />
+        </header>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10">
           {collections[0] && (
